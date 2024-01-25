@@ -2,7 +2,7 @@ import time
 import mysql.connector
 import json
 from typing import Optional
-from helper.exception import *
+from MySQL.exception import *
 
 
 class MySQLDManipulator:
@@ -63,11 +63,13 @@ class MySQLDManipulator:
             - table (Required) = table name
             - datas (Required) = data to be inserted into the database. Dictionary data type.
         """
-        
+
         try:
             if datas:
-                pattern = tuple("%s" for _ in range(len(datas))).__str__().replace("'", "")
-                column = tuple(key for key in datas.keys()).__str__().replace("'", "")
+                pattern = tuple("%s" for _ in range(len(datas))
+                                ).__str__().replace("'", "")
+                column = tuple(key for key in datas.keys()
+                               ).__str__().replace("'", "")
                 values = tuple(value for value in datas.values())
             else:
                 raise EmptyDictionaryError(
@@ -79,7 +81,7 @@ class MySQLDManipulator:
             self.__cursor.execute(operation=query, params=values)
 
             self.__connector.commit()
-        
+
         except MySQLConnectorError as e:
 
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -94,30 +96,33 @@ class MySQLDManipulator:
                 raise MySQLConnectorError(
                     f"Error! {e}"
                 )
-    
+
     def manyinsert(self, table: str, datas: list) -> None:
         """inserting a lot of new data into the database
-        
+
         Arguments :
             - table (Required) = table name
             - datas (Required) = data to be inserted into the database. List data type.
         """
         try:
             if datas:
-                pattern = tuple("%s" for _ in range(len(datas[0]))).__str__().replace("'", "")
-                column = tuple(key for key in datas[0].keys()).__str__().replace("'", "")
-                values = [tuple(value for value in data.values()) for data in datas]
+                pattern = tuple("%s" for _ in range(
+                    len(datas[0]))).__str__().replace("'", "")
+                column = tuple(
+                    key for key in datas[0].keys()).__str__().replace("'", "")
+                values = [tuple(value for value in data.values())
+                          for data in datas]
             else:
                 raise EmptyListError(
                     "Error! An error occurred due to an empty list. Please ensure that the list is not empty before proceeding."
                 )
-            
+
             query = f"INSERT INTO {table}{column} VALUES{pattern}"
 
             self.__cursor.executemany(operation=query, seq_params=values)
 
             self.__connector.commit()
-        
+
         except MySQLConnectorError as e:
 
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -142,14 +147,14 @@ class MySQLDManipulator:
             - set (Required) = settings for updates
             - condition (Required) = condition of the WHERE clause
         """
-        
+
         try:
             query = f"UPDATE {table} SET {column} = {set} WHERE {condition}"
 
             self.__cursor.execute(operation=query)
 
             self.__connector.commit()
-        
+
         except MySQLConnectorError as e:
 
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -164,10 +169,10 @@ class MySQLDManipulator:
                 raise MySQLConnectorError(
                     f"Error! {e}"
                 )
-    
+
     def delete(self, table: str, condition: Optional[str] = None) -> None:
         """deletes data from a database
-        
+
         Arguments :
             - table (Required) = table name
             - condition (Optional) = condition of the WHERE clause
@@ -179,7 +184,7 @@ class MySQLDManipulator:
             self.__cursor.execute(operation=query)
 
             self.__connector.commit()
-        
+
         except MySQLConnectorError as e:
 
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
