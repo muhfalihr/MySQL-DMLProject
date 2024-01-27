@@ -82,20 +82,8 @@ class MySQLDManipulator:
 
             self.__connector.commit()
 
-        except MySQLConnectorError as e:
-
-            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Access denied. Check your username and password."
-                )
-            elif e.errno == errorcode.ER_BAD_DB_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Database not found."
-                )
-            else:
-                raise MySQLConnectorError(
-                    f"Error! {e}"
-                )
+        except MySQLConnectorError as error:
+            ErrorHandling(error)
 
     def manyinsert(self, table: str, datas: list) -> None:
         """inserting a lot of new data into the database
@@ -123,20 +111,8 @@ class MySQLDManipulator:
 
             self.__connector.commit()
 
-        except MySQLConnectorError as e:
-
-            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Access denied. Check your username and password."
-                )
-            elif e.errno == errorcode.ER_BAD_DB_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Database not found."
-                )
-            else:
-                raise MySQLConnectorError(
-                    f"Error! {e}"
-                )
+        except MySQLConnectorError as error:
+            ErrorHandling(error)
 
     def update(self, table: str, column: str, set: str, condition: str) -> None:
         """updates data in a database
@@ -155,20 +131,8 @@ class MySQLDManipulator:
 
             self.__connector.commit()
 
-        except MySQLConnectorError as e:
-
-            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Access denied. Check your username and password."
-                )
-            elif e.errno == errorcode.ER_BAD_DB_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Database not found."
-                )
-            else:
-                raise MySQLConnectorError(
-                    f"Error! {e}"
-                )
+        except MySQLConnectorError as error:
+            ErrorHandling(error)
 
     def delete(self, table: str, condition: Optional[str] = None) -> None:
         """deletes data from a database
@@ -185,17 +149,5 @@ class MySQLDManipulator:
 
             self.__connector.commit()
 
-        except MySQLConnectorError as e:
-
-            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Access denied. Check your username and password."
-                )
-            elif e.errno == errorcode.ER_BAD_DB_ERROR:
-                raise MySQLConnectorError(
-                    "Error! Database not found."
-                )
-            else:
-                raise MySQLConnectorError(
-                    f"Error! {e}"
-                )
+        except MySQLConnectorError as error:
+            ErrorHandling(error)
